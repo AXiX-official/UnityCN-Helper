@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>UnityCN_Helper</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Copyright>Copyright © AXiX 2024</Copyright>
+        <Authors>$(Copyright)</Authors>
+        <Company />
+        <Title>$(AssemblyName)</Title>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommandLineParser" Version="2.9.1" />
+      <PackageReference Include="K4os.Compression.LZ4" Version="1.3.7-beta" />
+    </ItemGroup>
+
+</Project>
