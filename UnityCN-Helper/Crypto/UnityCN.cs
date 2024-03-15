@@ -1,4 +1,5 @@
-﻿using System;
+﻿// This file is based on: https://github.com/RazTools/Studio/tree/main/AssetStudio/Crypto/UnityCN.cs
+
 using System.Text;
 using System.Security.Cryptography;
 
@@ -54,7 +55,6 @@ namespace AssetStudio
 
         public static bool SetKey(Entry entry)
         {
-            //Logger.Verbose($"Initializing decryptor with key {entry.Key}");
             Console.WriteLine($"Initializing decryptor with key {entry.Key}");
             try
             {
@@ -67,7 +67,6 @@ namespace AssetStudio
             }
             catch (Exception e)
             {
-                //Logger.Error($"[UnityCN] Invalid key !!\n{e.Message}");
                 Console.WriteLine($"[UnityCN] Invalid key !!\n{e.Message}");
                 return false;
             }
@@ -120,9 +119,6 @@ namespace AssetStudio
             
             var b = Sub[((index >> 2) & 3) + 4] + Sub[index & 3] + Sub[((index >> 4) & 3) + 8] + Sub[((byte)index >> 6) + 12];
             
-            // low = (Index[bytes[offset] & 0xF] - b) & 0xF
-            // high = (Index[bytes[offset] >> 4] - b)
-            
             int i = 0;
             while (((Index[i] - b) & 0xF) != low && i < 0x10)
             {
@@ -135,9 +131,6 @@ namespace AssetStudio
                 i++;
             }
             high = i;
-            
-            // low = bytes[offset] & 0xF
-            // high = bytes[offset] >> 4
 
             bytes[offset] = (byte)(low | (high << 4));
             offset++;
@@ -235,7 +228,6 @@ namespace AssetStudio
                 var bytes = Convert.FromHexString(Key);
                 if (bytes.Length != 0x10)
                 {
-                    //Logger.Warning($"[UnityCN] {this} has invalid key, size should be 16 bytes, skipping...");
                     Console.WriteLine($"[UnityCN] {this} has invalid key, size should be 16 bytes, skipping...");
                     return false;
                 }

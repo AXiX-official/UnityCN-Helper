@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿// This file is based on: https://github.com/RazTools/Studio/tree/main/AssetStudio/BundleFile.cs
+
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Buffers;
 using K4os.Compression.LZ4;
@@ -172,18 +174,35 @@ namespace AssetStudio
             if (cryptoType == CryptoType.UnityCN)
             {
                 ReadUnityCN(reader);
-                unityCNsize = reader.BaseStream.Position - unityCNaddress;
-                reader.BaseStream.Position = unityCNaddress;
-                FileStream backup = new FileStream(unitycnFile, FileMode.Create, FileAccess.Write);
-                byte[] buffer = new byte[unityCNsize];
-                reader.BaseStream.Read(buffer, 0, buffer.Length);
-                backup.Write(buffer, 0, buffer.Length);
-                backup.Close();
+                if (!string.IsNullOrEmpty(unitycnFile))
+                {
+                    unityCNsize = reader.BaseStream.Position - unityCNaddress;
+                    reader.BaseStream.Position = unityCNaddress;
+                    using FileStream backup = new FileStream(unitycnFile, FileMode.Create, FileAccess.Write);
+                    byte[] buffer = new byte[unityCNsize];
+                    reader.BaseStream.Read(buffer, 0, buffer.Length);
+                    backup.Write(buffer, 0, buffer.Length);
+                    backup.Close();
+                }
             }
             else
             {
                 Console.WriteLine("Init UnityCN");
-                ReadUnityCN(new EndianBinaryReader(new FileStream(unitycnFile, FileMode.Open, FileAccess.Read)));
+                using FileStream fs = new FileStream(unitycnFile, FileMode.Open, FileAccess.Read);
+                var header = new byte[5];
+                fs.Read(header, 0, 5);
+                fs.Position = 0;
+                if (Encoding.UTF8.GetString(header) == "Unity")
+                {
+                    FileReader tmpReader = new FileReader(unitycnFile, fs);
+                    ReadBundleHeader(tmpReader);
+                    ReadHeader(reader);
+                    ReadUnityCN(reader);
+                }
+                else
+                {
+                    ReadUnityCN(new EndianBinaryReader(fs));
+                }
             }
             
             Console.WriteLine("ReadBlocksInfoAndDirectory");
@@ -262,7 +281,7 @@ namespace AssetStudio
             
             m_Header.WriteToStream(outStream);
             
-            if (cryptoType == CryptoType.None)
+            if (cryptoType == CryptoType.None && !string.IsNullOrEmpty(unitycnFile))
             {
                 using (FileStream fs = new FileStream(unitycnFile, FileMode.Open, FileAccess.Read))
                 {

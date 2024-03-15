@@ -1,4 +1,4 @@
-﻿using System;
+﻿// This file is copied from: https://github.com/RazTools/Studio/tree/main/AssetStudio/LZ4/LZ4Utils.cs
 
 namespace AssetStudio;
 public static class LZ4

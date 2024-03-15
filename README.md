@@ -8,11 +8,12 @@ A tool helps decrypt/encrypt assetbundle files for UnityCN.
 
 - -o, --outfile    Required. Output processed file.
 
-- -u, --unitycn    Required. backup unitycn info.
+- -u, --unitycn    (Default: ) Backup unitycn info file.You can use original encrypted asset file instead when
+  encrypting.
 
-- -e, --encrypt    (Default: false) Encrypt the lua file.
+- -e, --encrypt    (Default: false) Encrypt the asset file.
 
-- -d, --decrypt    (Default: false) Decrypt the lua file.
+- -d, --decrypt    (Default: false) Decrypt the asset file.
 
 - -n, --name       (Default: ) Game Name.
 
@@ -32,6 +33,12 @@ decrypt `test.asset` to `test.asset.de` with `test.cn` and `5265736F6E616E636552
 after modify `test.asset.de`, encrypt it to `test.asset` with `test.cn` and `5265736F6E616E63655265626F726E52` key.
 ```bash
 ./UnityCN-Helper -i test.asset.de -o test.asset -u test.cn -k 5265736F6E616E63655265626F726E52 -e
+```
+
+If you don't want save UnityCN info file, you can use original encrypted asset file instead.
+```bash
+./UnityCN-Helper -i test.asset -o test.asset.de -k 5265736F6E616E63655265626F726E52 -d
+./UnityCN-Helper -i test.asset.de -o test.asset -u test.asset -k 5265736F6E616E63655265626F726E52 -e
 ```
 
 ## Supported File Types

@@ -1,3 +1,5 @@
+// This file is copied from: https://github.com/RazTools/Studio/tree/main/AssetStudio/SevenZipHelper.cs
+
 using System;
 using System.IO;
 using SevenZip.Compression.LZMA;

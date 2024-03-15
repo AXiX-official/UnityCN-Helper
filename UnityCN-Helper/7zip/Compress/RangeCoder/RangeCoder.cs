@@ -1,3 +1,4 @@
+// This file is copied from: https://github.com/RazTools/Studio/tree/main/AssetStudio/7zip/Compress/RangeCoder/RangeCoder.cs
 using System;
 
 namespace SevenZip.Compression.RangeCoder

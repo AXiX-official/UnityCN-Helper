@@ -1,4 +1,5 @@
-﻿using System;
+﻿// This file is copied from: https://github.com/RazTools/Studio/tree/main/AssetStudio/Extensions/ByteArrayExtensions.cs
+using System;
 using System.Text;
 
 namespace AssetStudio

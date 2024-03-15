@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿// This file is copied from: https://github.com/RazTools/Studio/tree/main/AssetStudio/Extensions/StreamExtensions.cs
+using System.IO;
 
 namespace AssetStudio
 {

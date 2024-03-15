@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This file is copied from: https://github.com/RazTools/Studio/tree/main/AssetStudio/EndianBinaryReader.cs
+
+using System;
 using System.Buffers;
 using System.Buffers.Binary;
 using System.Collections.Generic;

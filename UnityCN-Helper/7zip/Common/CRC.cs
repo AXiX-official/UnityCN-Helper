@@ -1,3 +1,4 @@
+// This file is copied from: https://github.com/RazTools/Studio/tree/main/AssetStudio/7zip/Common/CRC.cs
 // Common/CRC.cs
 
 using System.Text;

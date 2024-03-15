@@ -1,3 +1,4 @@
+// This file is copied from: https://github.com/RazTools/Studio/tree/main/AssetStudio/7zip/Compress/RangeCoder/RangeCoderBitTree.cs
 using System;
 
 namespace SevenZip.Compression.RangeCoder

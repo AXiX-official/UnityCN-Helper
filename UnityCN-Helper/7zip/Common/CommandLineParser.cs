@@ -1,3 +1,4 @@
+// This file is copied from: https://github.com/RazTools/Studio/tree/main/AssetStudio/7zip/Common/CommandLineParser.cs
 // CommandLineParser.cs
 
 using System;

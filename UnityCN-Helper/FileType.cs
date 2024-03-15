@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This file is copied from: https://github.com/RazTools/Studio/tree/main/AssetStudio/FileType.cs
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
