@@ -196,8 +196,11 @@ namespace AssetStudio
                 {
                     FileReader tmpReader = new FileReader(unitycnFile, fs);
                     ReadBundleHeader(tmpReader);
-                    ReadHeader(reader);
-                    ReadUnityCN(reader);
+                    tmpReader.ReadInt64();
+                    tmpReader.ReadUInt32();
+                    tmpReader.ReadUInt32();
+                    tmpReader.ReadUInt32();
+                    ReadUnityCN(tmpReader);
                 }
                 else
                 {

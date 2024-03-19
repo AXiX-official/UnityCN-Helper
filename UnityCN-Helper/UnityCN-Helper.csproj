@@ -12,7 +12,7 @@
         <Title>$(AssemblyName)</Title>
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
         <Version>1.1.0</Version>
-        <PublishTrimmed>True</PublishTrimmed>
+        <PublishTrimmed>False</PublishTrimmed>
         <PackageProjectUrl>https://github.com/AXiX-official/UnityCN-Helper</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/AXiX-official/UnityCN-Helper</RepositoryUrl>
