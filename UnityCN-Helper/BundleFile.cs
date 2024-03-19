@@ -162,6 +162,7 @@ namespace AssetStudio
         private CryptoType cryptoType;
         private List<byte[]> blocksBytesList;
         private byte[] UncompressedDataHash;
+        private MemoryStream unityCNData;
 
         public BundleFile(FileReader reader, string targetFile, string unitycnFile,CryptoType cryptoType = CryptoType.UnityCN)
         {
@@ -187,6 +188,7 @@ namespace AssetStudio
             }
             else
             {
+                unityCNData = new MemoryStream();
                 Console.WriteLine("Init UnityCN");
                 using FileStream fs = new FileStream(unitycnFile, FileMode.Open, FileAccess.Read);
                 var header = new byte[5];
@@ -200,11 +202,19 @@ namespace AssetStudio
                     tmpReader.ReadUInt32();
                     tmpReader.ReadUInt32();
                     tmpReader.ReadUInt32();
+                    var begin = tmpReader.Position;
                     ReadUnityCN(tmpReader);
+                    var offset = tmpReader.Position - begin;
+                    tmpReader.Position = begin;
+                    byte[] buffer = new byte[offset];
+                    tmpReader.Read(buffer, 0, buffer.Length);
+                    unityCNData.Write(buffer, 0, buffer.Length);
                 }
                 else
                 {
                     ReadUnityCN(new EndianBinaryReader(fs));
+                    fs.Position = 0;
+                    fs.CopyTo(unityCNData);
                 }
             }
             
@@ -286,10 +296,8 @@ namespace AssetStudio
             
             if (cryptoType == CryptoType.None && !string.IsNullOrEmpty(unitycnFile))
             {
-                using (FileStream fs = new FileStream(unitycnFile, FileMode.Open, FileAccess.Read))
-                {
-                    fs.CopyTo(outStream);
-                }
+                unityCNData.Position = 0;
+                unityCNData.CopyTo(outStream);
             }
             
             if (m_Header.version >= 7)
