@@ -505,6 +505,8 @@ namespace AssetStudio
                         compressedSize = blocksInfoReader.ReadUInt32(),
                         flags = (StorageBlockFlags)blocksInfoReader.ReadUInt16()
                     });
+                    
+                    Console.WriteLine($"Block {i} Info: {m_BlocksInfo[i]}");
                 }
 
                 var nodesCount = blocksInfoReader.ReadInt32();
@@ -519,6 +521,8 @@ namespace AssetStudio
                         flags = blocksInfoReader.ReadUInt32(),
                         path = blocksInfoReader.ReadStringToNull(),
                     });
+                    
+                    Console.WriteLine($"Directory {i} Info: {m_DirectoryInfo[i]}");
                 }
             }
             paddingPosition = reader.Position;
@@ -545,8 +549,18 @@ namespace AssetStudio
             {
                 var blockInfo = m_BlocksInfo[i];
                 var compressionType = (CompressionType)(blockInfo.flags & StorageBlockFlags.CompressionTypeMask);
+                Console.WriteLine($"Block compression type {compressionType}");
                 switch (compressionType) //kStorageBlockCompressionTypeMask
                 {
+                    case CompressionType.None: //None
+                        {
+                            var compressedSize = (int)blockInfo.compressedSize;
+                            var compressedBytes = new byte[compressedSize];
+                            var compressedBytesSpan = compressedBytes.AsSpan(0, compressedSize);
+                            reader.Read(compressedBytesSpan);
+                            blocksBytesList.Add(compressedBytes);
+                            break;
+                        }
                     case CompressionType.Lz4: //LZ4
                     case CompressionType.Lz4HC: //LZ4HC
                         {
@@ -558,7 +572,6 @@ namespace AssetStudio
                             try
                             {
                                 var compressedBytesSpan = compressedBytes.AsSpan(0, compressedSize);
-                                var uncompressedBytesSpan = uncompressedBytes.AsSpan(0, uncompressedSize);
 
                                 reader.Read(compressedBytesSpan);
                                 if (cryptoType == CryptoType.UnityCN && ((int)blockInfo.flags & 0x100) != 0)
@@ -570,7 +583,6 @@ namespace AssetStudio
                                     UnityCN.EncryptBlock(compressedBytes, compressedSize, i); 
                                     blocksBytesList.Add(compressedBytes);
                                 }
-                                blocksStream.Write(uncompressedBytesSpan);
                             }
                             finally
                             {
@@ -582,7 +594,6 @@ namespace AssetStudio
                         throw new IOException($"Unsupported compression type {compressionType}");
                 }
             }
-            blocksStream.Position = 0;
         }
 
         public int[] ParseVersion()
