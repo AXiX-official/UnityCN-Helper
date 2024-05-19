@@ -1,5 +1,5 @@
 ﻿using CommandLine;
-using AssetStudio;
+using UnityAsset.NET.BundleFile;
 
 namespace UnityCN_Helper
 {
@@ -20,9 +20,6 @@ namespace UnityCN_Helper
         [Option('d', "decrypt", Default = false, HelpText = "Decrypt the asset file.")]
         public bool Decrypt { get; set; }
         
-        [Option('n', "name", Default = "", HelpText = "Game Name.")]
-        public string Name { get; set; }
-        
         [Option('k', "key", Required = true, HelpText = "UnityCN key for decryption.")]
         public string Key { get; set; }
     }
@@ -34,8 +31,8 @@ namespace UnityCN_Helper
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed<Options>(o =>
                 {
-                    BundleFile.UnityCNKey = o.Key;
-                    BundleFile.UnityCNGameName = o.Name;
+                    using FileStream inStream = new FileStream(o.InFile, FileMode.Open, FileAccess.Read);
+                    BundleFile inBundleFile = new BundleFile(inStream, key: o.Key);
                     if (o.Encrypt)
                     {
                         if (string.IsNullOrEmpty(o.UnitycnFile))
@@ -43,11 +40,13 @@ namespace UnityCN_Helper
                             Console.WriteLine("UnityCN file is required for encryption.");
                             return;
                         }
-                        BundleFile bundleFile = new BundleFile(new FileReader(o.InFile), o.OutFile, o.UnitycnFile, CryptoType.None);
+                        BundleFile cnbundleFile = new BundleFile(new FileStream(o.UnitycnFile, FileMode.Open, FileAccess.Read), key: o.Key);
+                        inBundleFile.UnityCNInfo = cnbundleFile.UnityCNInfo;
+                        inBundleFile.Write(new FileStream(o.OutFile, FileMode.Create, FileAccess.Write), infoPacker: "lz4hc", dataPacker: "lz4hc", unityCN: true);
                     }
                     else if (o.Decrypt)
                     {
-                        BundleFile bundleFile = new BundleFile(new FileReader(o.InFile), o.OutFile, o.UnitycnFile, CryptoType.UnityCN);
+                        inBundleFile.Write(new FileStream(o.OutFile, FileMode.Create, FileAccess.Write), unityCN: false);
                     }
                 });
         }

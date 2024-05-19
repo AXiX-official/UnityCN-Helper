@@ -15,8 +15,6 @@ A tool helps decrypt/encrypt assetbundle files for UnityCN.
 
 - -d, --decrypt    (Default: false) Decrypt the asset file.
 
-- -n, --name       (Default: ) Game Name.
-
 - -k, --key        Required. UnityCN key for decryption.
 
 - --help           Display this help screen.
@@ -41,13 +39,11 @@ If you don't want save UnityCN info file, you can use original encrypted asset f
 ./UnityCN-Helper -i test.asset.de -o test.asset -u test.asset -k 5265736F6E616E63655265626F726E52 -e
 ```
 
-## Supported File Types
+## You need to know
 
-Only support UnityFS now.
+In fact, after modifying the asset file, encrypting is not necessary. 
 
-Only tested on Unity 2019.4.40f1c1.
-
-If this tool doesn't work for you, please open an issue with the file you are trying to decrypt/encrypt.
+For games I encountered, the game can load unencrypted asset files as well as encrypted asset files.
 
 ## Special Thanks
 
