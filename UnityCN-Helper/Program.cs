@@ -11,7 +11,7 @@ namespace UnityCN_Helper
         [Option('o', "outfile", Required = true, HelpText = "Output processed file.")]
         public string OutFile { get; set; }
         
-        [Option('u', "unitycn", Default = "", HelpText = "Backup unitycn info file.You can use original encrypted asset file instead when encrypting.")]
+        [Option('u', "unitycn", Default = "", HelpText = "Only used when encrypting, set to original encrypted asset file to get UnityCN info.")]
         public string UnitycnFile { get; set; }
 
         [Option('e', "encrypt", Default = false, HelpText = "Encrypt the asset file.")]
@@ -22,8 +22,11 @@ namespace UnityCN_Helper
         
         [Option('k', "key", Required = true, HelpText = "UnityCN key for decryption.")]
         public string Key { get; set; }
+        
+        [Option('f', "folder", Default = false, HelpText = "Operate on a folder instead of a file.")]
+        public bool Folder { get; set; }
     }
-    
+
     internal static class Program
     {
         static void Main(string[] args)
@@ -31,8 +34,6 @@ namespace UnityCN_Helper
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed<Options>(o =>
                 {
-                    using FileStream inStream = new FileStream(o.InFile, FileMode.Open, FileAccess.Read);
-                    BundleFile inBundleFile = new BundleFile(inStream, key: o.Key);
                     if (o.Encrypt)
                     {
                         if (string.IsNullOrEmpty(o.UnitycnFile))
@@ -40,15 +41,77 @@ namespace UnityCN_Helper
                             Console.WriteLine("UnityCN file is required for encryption.");
                             return;
                         }
-                        BundleFile cnbundleFile = new BundleFile(new FileStream(o.UnitycnFile, FileMode.Open, FileAccess.Read), key: o.Key);
-                        inBundleFile.UnityCNInfo = cnbundleFile.UnityCNInfo;
-                        inBundleFile.Write(new FileStream(o.OutFile, FileMode.Create, FileAccess.Write), infoPacker: "lz4hc", dataPacker: "lz4hc", unityCN: true);
+
+                        if (o.Folder)
+                        {
+                            if (!Directory.Exists(o.InFile))
+                            {
+                                Console.WriteLine("Folder not found.");
+                                return;
+                            }
+
+                            foreach (string file in
+                                     Directory.EnumerateFiles(o.InFile, "*", SearchOption.AllDirectories))
+                            {
+                                string outFolder = Path.GetDirectoryName(file).Replace(o.InFile, o.OutFile);
+                                string infoFolder = Path.GetDirectoryName(o.UnitycnFile).Replace(o.InFile, o.OutFile);
+                                if (!Directory.Exists(outFolder))
+                                {
+                                    Directory.CreateDirectory(outFolder);
+                                }
+                                EncryptSingle(file, Path.Combine(outFolder, Path.GetFileName(file)), o.Key,Path.Combine(infoFolder, Path.GetFileName(o.UnitycnFile)));
+                            }
+                        }
+                        else
+                        {
+                            EncryptSingle(o.InFile, o.OutFile, o.Key, o.UnitycnFile);
+                        }
                     }
                     else if (o.Decrypt)
                     {
-                        inBundleFile.Write(new FileStream(o.OutFile, FileMode.Create, FileAccess.Write), unityCN: false);
+                        if (o.Folder)
+                        {
+                            if (!Directory.Exists(o.InFile))
+                            {
+                                Console.WriteLine("Folder not found.");
+                                return;
+                            }
+
+                            foreach (string file in
+                                     Directory.EnumerateFiles(o.InFile, "*", SearchOption.AllDirectories))
+                            {
+                                string outFolder = Path.GetDirectoryName(file).Replace(o.InFile, o.OutFile);
+                                if (!Directory.Exists(outFolder))
+                                {
+                                    Directory.CreateDirectory(outFolder);
+                                }
+                                DecryptSingle(file, Path.Combine(outFolder, Path.GetFileName(file)), o.Key);
+                            }
+                        }
+                        else
+                        {
+                            DecryptSingle(o.InFile, o.OutFile, o.Key);
+                        }
                     }
                 });
+        }
+
+        static void DecryptSingle(string inFile, string outFile, string key)
+        {
+            using FileStream inStream = new FileStream(inFile, FileMode.Open, FileAccess.Read);
+            BundleFile inBundleFile = new BundleFile(inStream, key: key);
+            inBundleFile.Write(new FileStream(outFile, FileMode.Create, FileAccess.Write), unityCN: false);
+        }
+
+        static void EncryptSingle(string inFile, string outFile, string key, string unitycnFile)
+        {
+            using FileStream inStream = new FileStream(inFile, FileMode.Open, FileAccess.Read);
+            BundleFile inBundleFile = new BundleFile(inStream, key: key);
+            BundleFile cnbundleFile =
+                new BundleFile(new FileStream(unitycnFile, FileMode.Open, FileAccess.Read), key: key);
+            inBundleFile.UnityCNInfo = cnbundleFile.UnityCNInfo;
+            inBundleFile.Write(new FileStream(outFile, FileMode.Create, FileAccess.Write), infoPacker: "lz4hc",
+                dataPacker: "lz4hc", unityCN: true);
         }
     }
 }

@@ -8,8 +8,7 @@ A tool helps decrypt/encrypt assetbundle files for UnityCN.
 
 - -o, --outfile    Required. Output processed file.
 
-- -u, --unitycn    (Default: ) Backup unitycn info file.You can use original encrypted asset file instead when
-  encrypting.
+- -u, --unitycn    (Default: "") Only used when encrypting, set to original encrypted asset file to get UnityCN info.
 
 - -e, --encrypt    (Default: false) Encrypt the asset file.
 
@@ -17,27 +16,26 @@ A tool helps decrypt/encrypt assetbundle files for UnityCN.
 
 - -k, --key        Required. UnityCN key for decryption.
 
+- -f, --folder     (Default: false) Operate on a folder instead of a file.
+
 - --help           Display this help screen.
 
 - --version        Display version information.
 
 ### Example
 
-decrypt `test.asset` to `test.asset.de` with `test.cn` and `5265736F6E616E63655265626F726E52` key.
 ```bash
-./UnityCN-Helper -i test.asset -o test.asset.de -u test.cn -k 5265736F6E616E63655265626F726E52 -d
+./UnityCN-Helper -i test.bundle -o test.bundle.de -k 5265736F6E616E63655265626F726E52 -d
+./UnityCN-Helper -i test.bundle.de -o test.bundle -u test.bundle -k 5265736F6E616E63655265626F726E52 -e
 ```
 
-after modify `test.asset.de`, encrypt it to `test.asset` with `test.cn` and `5265736F6E616E63655265626F726E52` key.
+for operating on a folder:
+
 ```bash
-./UnityCN-Helper -i test.asset.de -o test.asset -u test.cn -k 5265736F6E616E63655265626F726E52 -e
+./UnityCN-Helper -i test -o output -k 5265736F6E616E63655265626F726E52 -d -f
+./UnityCN-Helper -i output -o output_en -u test -k 5265736F6E616E63655265626F726E52 -e -f
 ```
 
-If you don't want save UnityCN info file, you can use original encrypted asset file instead.
-```bash
-./UnityCN-Helper -i test.asset -o test.asset.de -k 5265736F6E616E63655265626F726E52 -d
-./UnityCN-Helper -i test.asset.de -o test.asset -u test.asset -k 5265736F6E616E63655265626F726E52 -e
-```
 
 ## You need to know
 
