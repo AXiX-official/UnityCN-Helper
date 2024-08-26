@@ -8,8 +8,6 @@ A tool helps decrypt/encrypt assetbundle files for UnityCN.
 
 - -o, --outfile    Required. Output processed file.
 
-- -u, --unitycn    (Default: "") Only used when encrypting, set to original encrypted asset file to get UnityCN info.
-
 - -e, --encrypt    (Default: false) Encrypt the asset file.
 
 - -d, --decrypt    (Default: false) Decrypt the asset file.
@@ -26,14 +24,14 @@ A tool helps decrypt/encrypt assetbundle files for UnityCN.
 
 ```bash
 ./UnityCN-Helper -i test.bundle -o test.bundle.de -k 5265736F6E616E63655265626F726E52 -d
-./UnityCN-Helper -i test.bundle.de -o test.bundle -u test.bundle -k 5265736F6E616E63655265626F726E52 -e
+./UnityCN-Helper -i test.bundle.de -o test.bundle -k 5265736F6E616E63655265626F726E52 -e
 ```
 
 for operating on a folder:
 
 ```bash
 ./UnityCN-Helper -i test -o output -k 5265736F6E616E63655265626F726E52 -d -f
-./UnityCN-Helper -i output -o output_en -u test -k 5265736F6E616E63655265626F726E52 -e -f
+./UnityCN-Helper -i output -o output_en -k 5265736F6E616E63655265626F726E52 -e -f
 ```
 
 

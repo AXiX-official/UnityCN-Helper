@@ -10,9 +10,6 @@ namespace UnityCN_Helper
 
         [Option('o', "outfile", Required = true, HelpText = "Output processed file.")]
         public string OutFile { get; set; }
-        
-        [Option('u', "unitycn", Default = "", HelpText = "Only used when encrypting, set to original encrypted asset file to get UnityCN info.")]
-        public string UnitycnFile { get; set; }
 
         [Option('e', "encrypt", Default = false, HelpText = "Encrypt the asset file.")]
         public bool Encrypt { get; set; }
@@ -36,12 +33,6 @@ namespace UnityCN_Helper
                 {
                     if (o.Encrypt)
                     {
-                        if (string.IsNullOrEmpty(o.UnitycnFile))
-                        {
-                            Console.WriteLine("UnityCN file is required for encryption.");
-                            return;
-                        }
-
                         if (o.Folder)
                         {
                             if (!Directory.Exists(o.InFile))
@@ -54,17 +45,17 @@ namespace UnityCN_Helper
                                      Directory.EnumerateFiles(o.InFile, "*", SearchOption.AllDirectories))
                             {
                                 string outFolder = Path.GetDirectoryName(file).Replace(o.InFile, o.OutFile);
-                                string infoFolder = Path.GetDirectoryName(o.UnitycnFile).Replace(o.InFile, o.OutFile);
                                 if (!Directory.Exists(outFolder))
                                 {
                                     Directory.CreateDirectory(outFolder);
                                 }
-                                EncryptSingle(file, Path.Combine(outFolder, Path.GetFileName(file)), o.Key,Path.Combine(infoFolder, Path.GetFileName(o.UnitycnFile)));
+
+                                EncryptSingle(file, Path.Combine(outFolder, Path.GetFileName(file)), o.Key);
                             }
                         }
                         else
                         {
-                            EncryptSingle(o.InFile, o.OutFile, o.Key, o.UnitycnFile);
+                            EncryptSingle(o.InFile, o.OutFile, o.Key);
                         }
                     }
                     else if (o.Decrypt)
@@ -103,15 +94,12 @@ namespace UnityCN_Helper
             inBundleFile.Write(new FileStream(outFile, FileMode.Create, FileAccess.Write), unityCN: false);
         }
 
-        static void EncryptSingle(string inFile, string outFile, string key, string unitycnFile)
+        static void EncryptSingle(string inFile, string outFile, string key)
         {
             using FileStream inStream = new FileStream(inFile, FileMode.Open, FileAccess.Read);
-            BundleFile inBundleFile = new BundleFile(inStream, key: key);
-            BundleFile cnbundleFile =
-                new BundleFile(new FileStream(unitycnFile, FileMode.Open, FileAccess.Read), key: key);
-            inBundleFile.UnityCNInfo = cnbundleFile.UnityCNInfo;
+            BundleFile inBundleFile = new BundleFile(inStream);
             inBundleFile.Write(new FileStream(outFile, FileMode.Create, FileAccess.Write), infoPacker: "lz4hc",
-                dataPacker: "lz4hc", unityCN: true);
+                dataPacker: "lz4hc", unityCN: true, key: key);
         }
     }
 }

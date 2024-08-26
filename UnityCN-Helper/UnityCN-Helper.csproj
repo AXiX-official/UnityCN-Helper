@@ -11,7 +11,7 @@
         <Company />
         <Title>$(AssemblyName)</Title>
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>1.3.0</Version>
+        <Version>1.4.0</Version>
         <PublishTrimmed>False</PublishTrimmed>
         <PackageProjectUrl>https://github.com/AXiX-official/UnityCN-Helper</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -33,7 +33,7 @@
 
     <ItemGroup>
       <PackageReference Include="CommandLineParser" Version="2.9.1" />
-      <PackageReference Include="UnityAsset.NET" Version="0.0.4-beta.1" />
+      <PackageReference Include="UnityAsset.NET" Version="0.0.4-beta.2" />
     </ItemGroup>
 
 </Project>
