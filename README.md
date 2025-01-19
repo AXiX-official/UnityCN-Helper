@@ -1,5 +1,7 @@
 # UnityCN-Helper
 
+[<img src="https://api.gitsponsors.com/api/badge/img?id=770882367" height="20">](https://api.gitsponsors.com/api/badge/link?p=kgrFzvDuyvkJEf6+zLA7aLDDcBWMpjb6y2T0cwUg3qWtChhxMrU9lzUtyeo9RVIfU4/KIFXE0+fdycrPSrqv60sLut/vi0Lk/nbN5INWYNS3DyemrDmv4liXBIUVXvOz9oY58wyiMV/awJdRZLOzJQ==)
+
 A tool helps decrypt/encrypt assetbundle files for UnityCN.
 
 ## Command Line Arguments
