@@ -33,7 +33,7 @@
 
     <ItemGroup>
       <PackageReference Include="CommandLineParser" Version="2.9.1" />
-      <PackageReference Include="UnityAsset.NET" Version="0.0.4-beta.2" />
+      <PackageReference Include="UnityAsset.NET" Version="0.0.4-beta.3" />
     </ItemGroup>
 
 </Project>
