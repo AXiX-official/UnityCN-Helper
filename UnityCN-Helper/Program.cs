@@ -1,5 +1,6 @@
 ﻿using CommandLine;
-using UnityAsset.NET.BundleFile;
+using UnityAsset.NET.Enums;
+using UnityAsset.NET.Files;
 
 namespace UnityCN_Helper
 {
@@ -89,17 +90,14 @@ namespace UnityCN_Helper
 
         static void DecryptSingle(string inFile, string outFile, string key)
         {
-            using FileStream inStream = new FileStream(inFile, FileMode.Open, FileAccess.Read);
-            BundleFile inBundleFile = new BundleFile(inStream, key: key);
-            inBundleFile.Write(new FileStream(outFile, FileMode.Create, FileAccess.Write), unityCN: false);
+            BundleFile inBundleFile = new BundleFile(inFile, key: key);
+            inBundleFile.Serialize(outFile);
         }
 
         static void EncryptSingle(string inFile, string outFile, string key)
         {
-            using FileStream inStream = new FileStream(inFile, FileMode.Open, FileAccess.Read);
-            BundleFile inBundleFile = new BundleFile(inStream);
-            inBundleFile.Write(new FileStream(outFile, FileMode.Create, FileAccess.Write), infoPacker: "lz4hc",
-                dataPacker: "lz4hc", unityCN: true, key: key);
+            BundleFile inBundleFile = new BundleFile(inFile, key: key);
+            inBundleFile.Serialize(outFile, CompressionType.Lz4HC, CompressionType.Lz4HC, unityCnKey : key);
         }
     }
 }
