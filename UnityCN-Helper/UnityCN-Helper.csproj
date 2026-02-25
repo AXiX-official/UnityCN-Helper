@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <RootNamespace>UnityCN_Helper</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -11,13 +11,14 @@
         <Company />
         <Title>$(AssemblyName)</Title>
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>1.4.2</Version>
+        <Version>1.4.3</Version>
         <PublishTrimmed>False</PublishTrimmed>
         <PackageProjectUrl>https://github.com/AXiX-official/UnityCN-Helper</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/AXiX-official/UnityCN-Helper</RepositoryUrl>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     </PropertyGroup>
 
     <ItemGroup>
@@ -33,11 +34,7 @@
 
     <ItemGroup>
       <PackageReference Include="CommandLineParser" Version="2.9.1" />
-      <!--PackageReference Include="UnityAsset.NET" Version="0.1.1" /-->
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\UnityAsset.NET\UnityAsset.NET\UnityAsset.NET.csproj" />
+      <PackageReference Include="UnityAsset.NET" Version="0.3.1" />
     </ItemGroup>
 
 </Project>
