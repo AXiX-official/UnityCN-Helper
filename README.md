@@ -4,22 +4,32 @@ A tool helps decrypt/encrypt assetbundle files for UnityCN.
 
 ## Command Line Arguments
 
-- -i, --infile     Required. Input file to be processed.
+**`-i`, `--infile`**
+Required. Input file to be processed.
 
-- -o, --outfile    Required. Output processed file.
+**`-o`, `--outfile`**
+Required. Output processed file.
 
-- -e, --encrypt    (Default: false) Encrypt the asset file.
+**`-e`, `--encrypt`**
+(Default: false) Encrypt Input files.
 
-- -d, --decrypt    (Default: false) Decrypt the asset file.
+**`-d`, `--decrypt`**
+(Default: false) Decrypt Input files.
 
-- -k, --key        Required. UnityCN key for decryption.
+**`-k`, `--key`**
+Required. UnityCN key for decryption/encryption.
 
-- -f, --folder     (Default: false) Operate on a folder instead of a file.
+**`-f`, `--folder`**
+(Default: false) Operate on a folder instead of a file.
 
-- --help           Display this help screen.
+**`-c`, `--compression`**
+(Default: None) Compression Type for Output files.
 
-- --version        Display version information.
+**`--help`**
+Display this help screen.
 
+**`--version`**
+Display version information.
 ### Example
 
 ```bash

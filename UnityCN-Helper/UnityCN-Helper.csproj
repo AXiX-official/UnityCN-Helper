@@ -8,11 +8,9 @@
         <Nullable>enable</Nullable>
         <Copyright>Copyright © AXiX 2024</Copyright>
         <Authors>$(Copyright)</Authors>
-        <Company />
         <Title>$(AssemblyName)</Title>
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-        <Version>1.4.3</Version>
-        <PublishTrimmed>False</PublishTrimmed>
+        <Version>1.5.0</Version>
         <PackageProjectUrl>https://github.com/AXiX-official/UnityCN-Helper</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/AXiX-official/UnityCN-Helper</RepositoryUrl>
@@ -33,8 +31,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CommandLineParser" Version="2.9.1" />
-      <PackageReference Include="UnityAsset.NET" Version="0.3.1" />
+      <PackageReference Include="UnityAsset.NET" Version="0.6.0" />
+      <PackageReference Include="XenoAtom.CommandLine" Version="2.0.3" />
     </ItemGroup>
 
 </Project>
